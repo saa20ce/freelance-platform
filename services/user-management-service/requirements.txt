@@ -1,0 +1,9 @@
+fastapi
+fastapi-cors
+uvicorn
+sqlalchemy
+asyncpg
+alembic
+pydantic[email]
+passlib[bcrypt]
+pyjwt
