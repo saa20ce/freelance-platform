@@ -1,6 +1,6 @@
-from fastapi import FastAPI, Depends, HTTPException, Request, UploadFile, File
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.exc import IntegrityError
+from fastapi import FastAPI, Depends, HTTPException, Request
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import sessionmaker
 from fastapi.middleware.cors import CORSMiddleware
 from . import models, schemas, crud
 from .database import engine, get_db
@@ -10,10 +10,6 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
-
-# if __name__ == "__main__":
-#     import uvicorn
-#     uvicorn.run(app, host="0.0.0.0", port=3002)
 
 app = FastAPI()
 
@@ -60,22 +56,19 @@ async def get_user_profile(data: schemas.UserGeneralSettings, db: AsyncSession =
     return db_user
 
 @app.post("/api/register/", response_model=schemas.UserWithSettings)
-async def register_user(user: schemas.UserCreate, request: Request, db: AsyncSession = Depends(get_db)):
-    body = await request.body()
-    logger.info(f"Request body: {body}")
+async def register_user(user: schemas.UserCreate, db: AsyncSession = Depends(get_db)):
     db_user = await crud.get_user_by_email(db, email=user.email)
     if db_user:
-        logger.warning(f"Email already registered: {user.email}")
         raise HTTPException(status_code=400, detail="Email already registered")
+    
     try:
         new_user = await crud.create_user(db=db, user=user)
-        logger.info(f"Created new user: {new_user.email}")
         user_with_settings = await crud.get_user_with_settings(db, new_user.id)
-        logger.info(f"Retrieved user settings for user: {new_user.email}")
-        return user_with_settings
     except Exception as e:
         logger.error(f"Error creating user: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
+
+    return user_with_settings
 
 @app.put("/api/users/{user_id}/general", response_model=schemas.UserLogin)
 async def update_general_settings(user_id: int, settings: schemas.UserLogin, db: AsyncSession = Depends(get_db)):
@@ -102,7 +95,6 @@ async def login_user(user: schemas.UserLogin, db: AsyncSession = Depends(get_db)
     logger.info(f"User logged in: {user.email}")
     return user_with_settings
 
-
 @app.put("/api/users/{user_id}/change-password")
 async def change_password(user_id: int, password_data: schemas.PasswordChange, db: AsyncSession = Depends(get_db)):
     new_password = password_data.newPassword
@@ -114,4 +106,3 @@ async def change_password(user_id: int, password_data: schemas.PasswordChange, d
         raise HTTPException(status_code=404, detail="User not found")
     
     return {"message": "Password changed successfully"}
-

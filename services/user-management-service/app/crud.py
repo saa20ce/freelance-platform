@@ -3,18 +3,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from .models import User, GeneralSettings, ProfileSettings
 from .schemas import UserCreate, UserGeneralSettings, ProfileSettingsUpdate
-from passlib.context import CryptContext
 import logging
 
 logger = logging.getLogger(__name__)
-
-#pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-# def get_password_hash(password):
-#     return pwd_context.hash(password)
-
-# def verify_password(plain_password, hashed_password):
-#     return pwd_context.verify(plain_password, hashed_password)
 
 async def get_user_by_login(db: AsyncSession, login: str):
     logger.info(f"Fetching user by login: {login}")
@@ -39,9 +30,22 @@ async def create_user(db: AsyncSession, user: UserCreate):
         hashed_password=user.password # Сохраняем пароль в открытом виде
     )
     db.add(db_user)
+    await db.flush()
+
+    login = user.email.split('@')[0]
+    general_settings = GeneralSettings(user_id=db_user.id, login=login)
+    profile_settings = ProfileSettings(user_id=db_user.id)
+
+    db.add(general_settings)
+    db.add(profile_settings)
     await db.commit()
     await db.refresh(db_user)
+    await db.refresh(general_settings)
+    await db.refresh(profile_settings)
+
     logger.info(f"User created with ID: {db_user.id}")
+    logger.info(f"GeneralSettings and ProfileSettings created for user ID: {db_user.id}")
+
     return db_user
 
 async def get_user_by_email(db: AsyncSession, email: str):
@@ -70,7 +74,6 @@ async def change_user_password(db: AsyncSession, user_id: int, new_password: str
         logger.warning(f"User with id {user_id} not found")
         return None
 
-
 async def get_user_with_settings(db: AsyncSession, user_id: int):
     logger.info(f"Fetching user with settings by ID: {user_id}")
     result = await db.execute(
@@ -81,9 +84,10 @@ async def get_user_with_settings(db: AsyncSession, user_id: int):
     user = result.scalars().first()
     if user:
         logger.info(f"User with settings found for ID: {user_id}")
+        return user
     else:
         logger.warning(f"User with settings not found for ID: {user_id}")
-    return user
+        return None
 
 async def update_general_settings(db: AsyncSession, user_id: int, settings: UserGeneralSettings):
     logger.info(f"Starting update_general_settings for user_id: {user_id} with settings: {settings}")
@@ -106,7 +110,6 @@ async def update_general_settings(db: AsyncSession, user_id: int, settings: User
         await db.refresh(new_settings)
         logger.info(f"Created new general settings for user_id: {user_id}")
         return new_settings
-
 
 async def update_profile_settings(db: AsyncSession, user_id: int, settings: ProfileSettingsUpdate):
     result = await db.execute(select(ProfileSettings).filter(ProfileSettings.user_id == user_id))
