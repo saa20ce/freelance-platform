@@ -1,0 +1,77 @@
+@import '../../components/Popup/PopupOverlay.css';
+@import '../../components/Common/Button.css';
+
+.popup h2 {
+  margin-top: 0;
+  font-size: 24px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-field {
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: calc(100% - 20px);
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.forgot-password {
+  color: blue;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #ccc;
+}
+
+.divider:not(:empty)::before {
+  margin-right: .25em;
+}
+
+.divider:not(:empty)::after {
+  margin-left: .25em;
+}
+
+.social-login {
+  display: flex;
+  justify-content: space-around;
+  margin: 10px 0;
+}
+
+.social-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.switch-to-register {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.switch-to-register a {
+  color: blue;
+  text-decoration: none;
+  cursor: pointer;
+}

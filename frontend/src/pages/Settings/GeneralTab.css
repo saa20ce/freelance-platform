@@ -1,0 +1,42 @@
+@import '../../components/Common/Button.css';
+
+.general-tab {
+  padding: 20px;
+}
+
+.general-tab form {
+  display: flex;
+  flex-direction: column;
+}
+
+.general-tab label {
+  margin-bottom: 10px;
+}
+
+.input-field, .password-field {
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.general-tab .links {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.general-tab .links a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.general-tab .links .delete-account {
+  color: red;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}

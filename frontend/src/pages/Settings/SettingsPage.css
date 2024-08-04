@@ -1,0 +1,11 @@
+.settings-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tab-content {
+  margin-top: 20px;
+  width: 400px;
+  min-height: 550px;
+}
