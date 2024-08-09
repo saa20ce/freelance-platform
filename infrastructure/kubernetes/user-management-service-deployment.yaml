@@ -20,6 +20,8 @@ spec:
         env:
         - name: DATABASE_URL
           value: "postgresql+asyncpg://username:password@postgres-service:5432/user-service"
+        - name: JWT_SECRET
+          value: "ZXhhbXBsZV9zZWNyZXRfa2V5"
         resources:
           requests:
             memory: "256Mi"
