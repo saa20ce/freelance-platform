@@ -83,21 +83,21 @@ const changePassword = async (req, res) => {
     }
 };
 
-const updateGeneralSettings = async (req, res) => {
+const updateUserLogin = async (req, res) => {
     const userId = req.params.id;
-    const { email, login, password } = req.body;
+    const { login } = req.body;
 
     try {
-        console.log(`Updating user ${userId} with login: ${login}, password: ${password}, email: ${email}`);
-        const response = await axios.put(`${userManagementServiceUrl}/api/users/${userId}/general`, { email, login, password });
+        console.log(`Updating user ${userId} with login: ${login}`);
+        const response = await axios.put(`${userManagementServiceUrl}/api/users/${userId}/update-login`, { login });
         res.send(response.data);
-        console.log(`User ${userId} updated successfully.`);
+        console.log(`User login ${userId} updated successfully.`);
     } catch (err) {
         if (err.response && err.response.data) {
             res.status(err.response.status).send({ error: err.response.data.detail });
         } else {
-            console.error(`Error updating general settings: ${err.message}`);
-            res.status(400).send({ error: 'Error updating general settings' });
+            console.error(`Error updating user login: ${err.message}`);
+            res.status(400).send({ error: 'Error updating user login' });
         }
     }
 };
@@ -159,4 +159,4 @@ const upload = multer({
     }
 };
 
-module.exports = { getUserProfile, register, login, changePassword, updateGeneralSettings, updateProfileSettings };
+module.exports = { getUserProfile, register, login, changePassword, updateUserLogin, updateProfileSettings };
