@@ -52,7 +52,7 @@ const Header = ({ onLoginClick, onRegisterClick }) => {
                   <span>Занят</span>
                   <input type="checkbox" />
                 </label>
-                <Link to={`/user/${user?.general_settings.login}`} className="dropdown-link">Профиль</Link>
+                <Link to={`/user/${user.login}`} className="dropdown-link">Профиль</Link>
                 <Link to="/settings" className="dropdown-link">Настройки</Link>
                 <Link to="/help" className="dropdown-link">Помощь</Link>
                 <Button onClick={handleLogout} className="dropdown-link">Выйти</Button>

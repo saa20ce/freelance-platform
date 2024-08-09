@@ -12,7 +12,7 @@ import './GeneralTab.css';
 function GeneralTab() {
   const dispatch = useDispatch();
   const authState = useSelector((state) => state.auth);
-  const [login, setLogin] = useState(authState.user?.general_settings?.login || '');
+  const [login, setLogin] = useState(authState.user?.login || '');
   const [email, setEmail] = useState(authState.user?.email || '');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -21,7 +21,7 @@ function GeneralTab() {
 
   useEffect(() => {
     if (authState.user) {
-      setLogin(authState.user.general_settings?.login || '');
+      setLogin(authState.user.login || '');
       setEmail(authState.user.email || '');
     }
   }, [authState.user]);
@@ -43,22 +43,19 @@ function GeneralTab() {
     }
 
     try {
-      // Обновление общей информации пользователя
-      const responseGeneral = await axios.put(`http://localhost:3001/api/auth/users/${authState.user.id}/general`, {
-        login,
-        email,
-      });
+      if (login) {
+        const responseLogin = await axios.put(`http://localhost:3001/api/auth/users/${authState.user.id}/update-login`, {
+          login,
+        });
 
-      if (responseGeneral.data) {
-        console.log('Response data:', responseGeneral.data);
-        dispatch(updateUser({
-          ...authState.user,
-          general_settings: {
-            ...authState.user.general_settings,
-            login: responseGeneral.data.login
-          },
-          email: responseGeneral.data.email || email
-        }));
+        if (responseLogin.data) {
+          console.log('Response data:', responseLogin.data);
+          dispatch(updateUser({
+            ...authState.user,
+            email: responseLogin.data.email || email,
+            login: responseLogin.data.login || login
+          }));
+        }
       }
 
       // Обновление пароля, если введен новый пароль
@@ -75,7 +72,6 @@ function GeneralTab() {
       setIsChanged(false);
       setNewPassword('');
       setConfirmPassword('');
-      console.log('Updated user data:', responseGeneral.data);
     } catch (err) {
       console.error('Error updating user:', err);
       if (err.response && err.response.data && err.response.data.error) {
@@ -85,6 +81,10 @@ function GeneralTab() {
       }
     }
   };
+
+  if (!authState.user) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="general-tab">
