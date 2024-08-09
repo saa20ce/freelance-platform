@@ -2,8 +2,10 @@ fastapi
 fastapi-cors
 uvicorn
 sqlalchemy
+sqlalchemy[asyncio]
 asyncpg
 alembic
+pydantic
 pydantic[email]
 passlib[bcrypt]
 pyjwt

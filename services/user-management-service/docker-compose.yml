@@ -8,12 +8,12 @@ services:
     depends_on:
       - user-db
     environment:
-      - DATABASE_URL=postgresql+asyncpg://user:password@user-db:5432/user-service
+      - DATABASE_URL=postgresql+asyncpg://username:password@user-db:5432/user-service
 
   user-db:
     image: postgres:13
     environment:
-      POSTGRES_USER: user
+      POSTGRES_USER: username
       POSTGRES_PASSWORD: password
       POSTGRES_DB: user-service
     ports:
