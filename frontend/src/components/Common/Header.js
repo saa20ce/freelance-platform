@@ -23,11 +23,9 @@ const Header = ({ onLoginClick, onRegisterClick }) => {
     <header className="header">
       <div className="logo">MyApp</div>
       <nav className="nav">
-        <Link to="/kworks" className="nav-link">Кворки</Link>
         <Link to="/orders" className="nav-link">Заказы</Link>
-        <Link to="/exchange" className="nav-link">Биржа</Link>
-        <Link to="/portfolio" className="nav-link">Портфолио</Link>
-        <Link to="/analytics" className="nav-link">Аналитика</Link>
+        <Link to="/manage_projects" className="nav-link">Проекты</Link>
+        <Link to="/portfolio" className="nav-link">Избранное</Link>
         <Link to="/chat" className="nav-link">Чат</Link>
       </nav>
       <nav className="auth-buttons">

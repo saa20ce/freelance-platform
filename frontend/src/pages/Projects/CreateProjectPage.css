@@ -1,0 +1,42 @@
+.create-project-page {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-description {
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.create-project-form .form-group {
+    margin-bottom: 20px;
+}
+
+.create-project-form .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.create-project-form .form-group input,
+.create-project-form .form-group textarea,
+.create-project-form .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.create-project-form .form-group .char-count {
+    display: block;
+    margin-top: 5px;
+    color: #888;
+}
+
+.create-project-form .form-group input[type="checkbox"] {
+    margin-right: 10px;
+}

@@ -6,6 +6,8 @@ import LoginPopup from './pages/Auth/LoginPopup';
 import RegisterPopup from './pages/Auth/RegisterPopup';
 import SettingsPage from './pages/Settings/SettingsPage';
 import ProfilePage from './pages/Profile/ProfilePage';
+import ManageProjectsPage from './pages/Projects/ManageProjectsPage';
+import CreateProjectPage from './pages/Projects/CreateProjectPage';
 import ProtectedRoute from './ProtectedRoute';
 import axios from 'axios';
 
@@ -53,6 +55,22 @@ const App = () => {
           element={
             <ProtectedRoute isAuthenticated={isAuthenticated}>
               <SettingsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/manage_projects"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <ManageProjectsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/create_project"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <CreateProjectPage />
             </ProtectedRoute>
           }
         />
