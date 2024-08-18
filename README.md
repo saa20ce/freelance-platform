@@ -4,39 +4,56 @@
 cd frontend
 npm start
 
-# recreate docker image:
-# Перейдите в директорию auth-service
-cd services/auth-service
+# recreate service docker image:
+## Перейдите в директорию auth-service
+cd ../auth-service
 
-# Постройте новый Docker-образ
+## Постройте новый Docker-образ
 docker build -t localhost:5000/auth-service:latest .
 
-# Запушьте образ в локальный регистр
+## Запушьте образ в локальный регистр
 docker push localhost:5000/auth-service:latest
 
-# Перезапуск сервиса
+## Перезапуск сервиса
 kubectl rollout restart deployment/auth-service
 
 
-# Перейдите в директорию user-management-service
+## Перейдите в директорию user-management-service
 cd ../user-management-service
 
-# Постройте новый Docker-образ
+## Постройте новый Docker-образ
 docker build -t localhost:5000/user-management-service:latest .
 
-# Запушьте образ в локальный регистр
+## Запушьте образ в локальный регистр
 docker push localhost:5000/user-management-service:latest
 
-# Перезапуск сервиса
+## Перезапуск сервиса
 kubectl rollout restart deployment/user-management-service
 
-# Перезапуск пода
+
+## Перейдите в директорию project-management-service
+cd ../project-management-service
+
+## Постройте новый Docker-образ
+docker build -t localhost:5000/project-management-service:latest .
+
+## Запушьте образ в локальный регистр
+docker push localhost:5000/project-management-service:latest
+
+## Перезапуск сервиса
+kubectl rollout restart deployment/project-management-service
+
+
+## Посмотреть поды
+kubectl get pods
+
+## Перезапуск пода
 kubectl delete pod 
 
-# redirect port forward:
+## redirect port forward:
 kubectl port-forward svc/auth-service 3001:3001 
 
 kubectl port-forward svc/user-management-service 3002:3002
 
-# user-management service container logs
+## user-management service container logs
 kubectl exec -it user-management-service-79495b99f5-77bjs -- cat /app/logs.txt
