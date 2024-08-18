@@ -24,6 +24,8 @@ spec:
               value: "http://user-management-service:3002"
             - name: JWT_SECRET
               value: "QTU4zT2gVR+Az4EjjChrAV7pgsQDPkcz03wMcISVsJg="
+            - name: PROJECT_MANAGEMENT_SERVICE_URL
+              value: "http://project-management-service:3003"
           resources:
             limits:
               memory: "512Mi"
