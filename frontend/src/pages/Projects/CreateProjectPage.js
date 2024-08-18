@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import Title from '../../components/Common/Title';
 import Button from '../../components/Common/Button';
 import InputField from '../../components/Form/InputField';
@@ -31,10 +32,24 @@ const CreateProjectPage = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Здесь отправка данных на сервер
-        console.log('Form submitted:', formData);
+        try {
+            const token = localStorage.getItem('token');
+            console.log('Using token:', token);
+            const response = await axios.post(
+                'http://localhost:3001/api/auth/projects/create',
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            console.log('Project created successfully:', response.data);
+        } catch (error) {
+            console.error('Error creating project:', error.response ? error.response.data : error.message);
+        }        console.log('Form submitted:', formData);
     };
 
     return (
