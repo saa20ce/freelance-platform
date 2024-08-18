@@ -6,6 +6,7 @@ const fs = require('fs');
 const sharp = require('sharp');
 
 const userManagementServiceUrl = process.env.USER_MANAGEMENT_SERVICE_URL;
+const projectManagementServiceUrl = process.env.PROJECT_MANAGEMENT_SERVICE_URL;
 
 const getUserProfile = async (req, res) => {
     const { login } = req.body;
@@ -159,4 +160,41 @@ const upload = multer({
     }
 };
 
-module.exports = { getUserProfile, register, login, changePassword, updateUserLogin, updateProfileSettings };
+const createProject = async (req, res) => {
+    console.log('Received create project request', req.body);
+    const { title, description, category, price, allowHigherPrice } = req.body;
+    const userId = req.user.id;
+    console.log(`Create Project by user ${req.user.id} with request body: ${req.body}`);
+    try {
+        const response = await axios.post(`${projectManagementServiceUrl}/api/projects/create`, {
+            title,
+            description,
+            category,
+            price,
+            allowHigherPrice,
+            userId,
+        });
+        res.status(201).send(response.data);
+    } catch (err) {
+        console.error(`Error creating project: ${err.message}`);
+        res.status(500).send({ error: 'Error creating project' });
+    }
+};
+
+const getUserProjects = async (req, res) => {
+    console.log('Received get user project request', req.body);
+    const userId = req.user.id;
+
+    try {
+        console.log(`Requesting projects from: ${projectManagementServiceUrl}/api/projects/user/${userId}`);
+        const response = await axios.get(`${projectManagementServiceUrl}/api/projects/user/${userId}`);
+        res.status(response.status).send(response.data);
+    } catch (err) {
+        console.error(`Error fetching projects: ${err.message}`);
+        const status = err.response?.status || 500;
+        const error = err.response?.data?.error || 'Error fetching projects';
+        res.status(status).send({ error });
+    }
+};
+
+module.exports = { getUserProfile, register, login, changePassword, updateUserLogin, updateProfileSettings, createProject, getUserProjects };
