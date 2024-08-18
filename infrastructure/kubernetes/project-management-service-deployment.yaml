@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project-management-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: project-management-service
+  template:
+    metadata:
+      labels:
+        app: project-management-service
+    spec:
+      containers:
+      - name: project-management-service
+        image: localhost:5000/project-management-service:latest
+        ports:
+        - containerPort: 3003
+        env:
+        - name: DATABASE_URL
+          value: "jdbc:postgresql://project-postgres-service:5432/project-service"
+        - name: SPRING_DATASOURCE_USERNAME
+          value: "projectuser"
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: "projectpassword"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: project-management-service
+spec:
+  selector:
+    app: project-management-service
+  ports:
+    - protocol: TCP
+      port: 3003
+      targetPort: 3003
