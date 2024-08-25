@@ -1,7 +1,20 @@
 const express = require('express');
-const { getUserProfile, register, login, changePassword, updateUserLogin, updateProfileSettings, createProject, getUserProjects } = require('../controllers/authController');
 const multer = require('multer');
 const authMiddleware = require('../middleware/authMiddleware');
+const { 
+        getUserProfile, 
+        register, 
+        login, 
+        changePassword, 
+        updateUserLogin, 
+        updateProfileSettings, 
+        createProject, 
+        getUserProjects, 
+        changeProjectStatus, 
+        updateProject, 
+        getProjectById,
+        searchProjects
+    } = require('../controllers/authController');
 
 const router = express.Router();
 
@@ -15,5 +28,10 @@ router.put('/users/:id/update-login', updateUserLogin);
 router.put('/users/:id/profile', upload.single('photo'), updateProfileSettings);
 router.get('/user/projects', authMiddleware, getUserProjects);
 router.post('/projects/create', authMiddleware, createProject);
+router.get('/projects/:id', authMiddleware, getProjectById);
+router.post('/projects/:projectId/status', authMiddleware, changeProjectStatus);
+router.put('/projects/:id', authMiddleware, updateProject);
+router.get('/projects/search', authMiddleware, searchProjects);
+
 
 module.exports = router;

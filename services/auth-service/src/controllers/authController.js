@@ -7,6 +7,7 @@ const sharp = require('sharp');
 
 const userManagementServiceUrl = process.env.USER_MANAGEMENT_SERVICE_URL;
 const projectManagementServiceUrl = process.env.PROJECT_MANAGEMENT_SERVICE_URL;
+const searchServiceUrl = process.env.SEARCH_SERVICE_URL;
 
 const getUserProfile = async (req, res) => {
     const { login } = req.body;
@@ -160,6 +161,19 @@ const upload = multer({
     }
 };
 
+const getProjectById = async (req, res) => {
+    const projectId = req.params.id;
+    try {
+        const response = await axios.get(`${projectManagementServiceUrl}/api/projects/${projectId}`);
+        res.status(response.status).send(response.data);
+    } catch (err) {
+        console.error(`Error fetching project: ${err.message}`);
+        const status = err.response?.status || 500;
+        const error = err.response?.data?.error || 'Error fetching project';
+        res.status(status).send({ error });
+    }
+};
+
 const createProject = async (req, res) => {
     console.log('Received create project request', req.body);
     const { title, description, category, price, allowHigherPrice } = req.body;
@@ -181,6 +195,21 @@ const createProject = async (req, res) => {
     }
 };
 
+const updateProject = async (req, res) => {
+    const { id } = req.params;
+    const projectData = req.body;
+
+    try {
+        const response = await axios.put(`${projectManagementServiceUrl}/api/projects/${id}`, projectData);
+        res.status(response.status).send(response.data);
+    } catch (err) {
+        console.error(`Error updating project: ${err.message}`);
+        const status = err.response?.status || 500;
+        const error = err.response?.data?.error || 'Error updating project';
+        res.status(status).send({ error });
+    }
+};
+
 const getUserProjects = async (req, res) => {
     console.log('Received get user project request', req.body);
     const userId = req.user.id;
@@ -197,4 +226,52 @@ const getUserProjects = async (req, res) => {
     }
 };
 
-module.exports = { getUserProfile, register, login, changePassword, updateUserLogin, updateProfileSettings, createProject, getUserProjects };
+const changeProjectStatus = async (req, res) => {
+    const { projectId } = req.params;
+    const { status } = req.body;
+    const userId = req.user.id;
+
+    console.log(`Changing status of project ${projectId} by user ${userId} to ${status}`);
+
+    try {
+        const response = await axios.post(`${projectManagementServiceUrl}/api/projects/${projectId}/status`, {
+            userId,
+            status
+        });
+        res.status(response.status).send(response.data);
+    } catch (err) {
+        console.error(`Error changing project status: ${err.message}`);
+        const status = err.response?.status || 500;
+        const error = err.response?.data?.error || 'Error changing project status';
+        res.status(status).send({ error });
+    }
+};
+
+const searchProjects = async (req, res) => {
+    const { q } = req.query;
+
+    try {
+        const response = await axios.get(`${searchServiceUrl}/search`, { params: { q } });
+        res.send(response.data);
+    } catch (err) {
+        console.error(`Error searching projects: ${err.message}`);
+        const status = err.response?.status || 500;
+        const error = err.response?.data?.error || 'Error searching projects';
+        res.status(status).send({ error });
+    }
+};
+
+module.exports = { 
+        getUserProfile, 
+        register, 
+        login, 
+        changePassword, 
+        updateUserLogin, 
+        updateProfileSettings, 
+        createProject, 
+        getUserProjects, 
+        changeProjectStatus, 
+        updateProject, 
+        getProjectById,
+        searchProjects 
+    };
