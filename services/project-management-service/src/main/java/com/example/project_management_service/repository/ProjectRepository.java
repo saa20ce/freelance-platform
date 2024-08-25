@@ -10,4 +10,5 @@ import java.util.List;
 public interface ProjectRepository extends JpaRepository<Project, UUID> {
     // Custom queries can be added here if needed
     List<Project> findByUserId(Long userId);
+    List<Project> findAllByOrderByCreatedAtDesc();
 }

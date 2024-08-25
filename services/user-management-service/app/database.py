@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from contextlib import asynccontextmanager
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://username:password@postgres-service:5432/user-service")
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://username:password@user-postgres-service:5432/user-service")
 
 import logging
 logger = logging.getLogger(__name__)

@@ -3,6 +3,7 @@ package com.example.projectmanagementservice.dto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Positive;
+import com.example.projectmanagementservice.model.ProjectStatus;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -29,6 +30,9 @@ public class ProjectDTO {
 
     @NotNull
     private Long userId;
+
+    @NotNull
+    private ProjectStatus status;
 
     // Getters and setters
 
@@ -78,5 +82,13 @@ public class ProjectDTO {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public ProjectStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ProjectStatus status) {
+        this.status = status;
     }
 }
