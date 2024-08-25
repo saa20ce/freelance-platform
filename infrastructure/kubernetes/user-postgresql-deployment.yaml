@@ -1,26 +1,26 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres-service
+  name: user-postgres-service
 spec:
   ports:
     - port: 5432
   selector:
-    app: postgres
+    app: user-postgres
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres
+  name: user-postgres
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres
+      app: user-postgres
   template:
     metadata:
       labels:
-        app: postgres
+        app: user-postgres
     spec:
       containers:
       - name: postgres

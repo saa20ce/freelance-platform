@@ -26,6 +26,8 @@ spec:
               value: "QTU4zT2gVR+Az4EjjChrAV7pgsQDPkcz03wMcISVsJg="
             - name: PROJECT_MANAGEMENT_SERVICE_URL
               value: "http://project-management-service:3003"
+            - name: SEARCH_SERVICE_URL
+              value: "http://search-service:3004"
           resources:
             limits:
               memory: "512Mi"
