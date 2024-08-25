@@ -1,0 +1,34 @@
+.project-filter-panel {
+    width: 250px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-right: 1px solid #e1e4e8;
+}
+
+.project-filter-panel h3 {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.project-filter-panel ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.project-filter-panel ul li {
+    margin-bottom: 10px;
+}
+
+.project-filter-panel ul li input {
+    margin-right: 8px;
+}
+
+.project-filter-panel input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}

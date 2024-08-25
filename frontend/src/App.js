@@ -8,6 +8,7 @@ import SettingsPage from './pages/Settings/SettingsPage';
 import ProfilePage from './pages/Profile/ProfilePage';
 import ManageProjectsPage from './pages/Projects/ManageProjectsPage';
 import CreateProjectPage from './pages/Projects/CreateProjectPage';
+import SearchPage from './pages/Search/SearchPage';
 import ProtectedRoute from './ProtectedRoute';
 import axios from 'axios';
 
@@ -71,6 +72,22 @@ const App = () => {
           element={
             <ProtectedRoute isAuthenticated={isAuthenticated}>
               <CreateProjectPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/edit_project/:projectId"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <CreateProjectPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/search"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <SearchPage />
             </ProtectedRoute>
           }
         />

@@ -30,6 +30,28 @@ const ManageProjectsPage = () => {
         fetchProjects();
     }, []);
 
+    const handleStatusChange = async (projectId, currentStatus) => {
+        const newStatus = currentStatus === 'IN_PROGRESS' ? 'PAUSED' : 'IN_PROGRESS';
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.post(
+                `http://localhost:3001/api/auth/projects/${projectId}/status`,
+                { status: newStatus },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            setProjects((prevProjects) =>
+                prevProjects.map((project) =>
+                    project.id === projectId ? { ...project, status: newStatus } : project
+                )
+            );
+        } catch (err) {
+            setError('Не удалось изменить статус проекта');
+        }
+    };
 
     return (
         <div className="manage-projects-page">
@@ -42,7 +64,7 @@ const ManageProjectsPage = () => {
             ) : error ? (
                 <div className="error">{error}</div>
             ) : (
-                <ProjectTable projects={projects} />
+                <ProjectTable projects={projects} onStatusChange={handleStatusChange} />
             )}
         </div>
     );

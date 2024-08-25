@@ -22,6 +22,14 @@
     display: inline-block;
 }
 
+.project-table .status.in_progress {
+    background-color: #2dc200;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
 .project-table .actions button {
     margin-right: 8px;
     background: none;

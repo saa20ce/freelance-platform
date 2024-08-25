@@ -1,7 +1,15 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import Button from '../Common/Button';
 import './ProjectTable.css';
 
-const ProjectTable = ({ projects }) => {
+const ProjectTable = ({ projects, onStatusChange }) => {
+    const navigate = useNavigate();
+
+    const handleEditClick = (projectId) => {
+        navigate(`/edit_project/${projectId}`);
+    };
+
     return (
         <div className="project-table">
             <table>
@@ -31,9 +39,21 @@ const ProjectTable = ({ projects }) => {
                                 </td>
                                 <td>
                                     <div className="actions">
-                                        <button className="play-btn" title="Запустить проект">▶️</button>
-                                        <button className="edit-btn" title="Редактировать проект">✏️</button>
-                                        <button className="delete-btn" title="Удалить проект">🗑️</button>
+                                        <Button 
+                                            className="play-btn"
+                                            onClick={() => onStatusChange(project.id, project.status)}
+                                            title={project.status === 'IN_PROGRESS' ? 'Приостановить проект' : 'Запустить проект'}
+                                        >
+                                            {project.status === 'IN_PROGRESS' ? '⏸️' : '▶️'}
+                                        </Button>
+                                        <Button 
+                                            className="edit-btn"
+                                            title="Редактировать проект"
+                                            onClick={() => handleEditClick(project.id)}
+                                        >
+                                            ✏️
+                                        </Button>
+                                        <Button className="delete-btn" title="Удалить проект">🗑️</Button>
                                     </div>
                                 </td>
                             </tr>

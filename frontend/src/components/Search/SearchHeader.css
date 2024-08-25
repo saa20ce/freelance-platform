@@ -1,0 +1,30 @@
+.search-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.filters {
+    display: flex;
+    gap: 10px;
+}
+
+.info {
+    margin-left: auto;
+    font-size: 12px;
+    color: #777;
+}
+
+.email-notifications {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.email-notifications:hover {
+    background-color: #0056b3;
+}
