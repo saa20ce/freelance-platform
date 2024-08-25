@@ -1,0 +1,6 @@
+server:
+  port: 3004
+
+elasticsearch:
+  url: http://elasticsearch:9200
+  index: projects
